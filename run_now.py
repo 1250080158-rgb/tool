@@ -56,13 +56,10 @@ def tool_logistics_fix():
 
     shipper = danh_sach_shipper[ten_tx_input]
 
-    # [QUAN TRỌNG 1] Reset danh sách về 0 trước khi xử lý
-    # Lệnh này đảm bảo bạn nhập bao nhiêu thì chỉ hiện bấy nhiêu, không bị cộng dồn đơn cũ
+
     shipper["don_dang_giao"] = [] 
 
     for ma_don_input in ds_ma_don:
-        # [QUAN TRỌNG 2] Kiểm tra trùng lặp NGAY LẬP TỨC
-        # Lệnh này chặn việc nhập "DH01, DH01". Cái đầu vào được, cái sau sẽ bị chặn.
         if ma_don_input in shipper["don_dang_giao"]:
             print(f"⚠️ Đơn hàng {ma_don_input} bị trùng! (Bỏ qua)")
             continue
@@ -77,7 +74,7 @@ def tool_logistics_fix():
 
         the_go_don = True
 
-        # Logic kiểm tra khoảng cách gộp đơn (giữ nguyên logic cũ của bạn)
+     
         if len(shipper["don_dang_giao"]) > 0:
             for ma_da_co in shipper["don_dang_giao"]:
                 don_cu = danh_sach_don_hang[ma_da_co]
@@ -89,7 +86,7 @@ def tool_logistics_fix():
                     break
 
         if the_go_don:
-            # Chỉ khi nào thỏa mãn mọi điều kiện mới thêm vào danh sách
+       
             shipper["don_dang_giao"].append(ma_don_input)
 
             kc_shipper_khach = geodesic(vi_tri_shipper, vi_tri_khach).km
@@ -99,7 +96,6 @@ def tool_logistics_fix():
             print(f"- Khách hàng: {don.get('ten', 'Chưa rõ')}")
             print(f"- Khoảng cách: {kc_shipper_khach:.2f} km | Thời gian: {phut} phút")
 
-    # In kết quả cuối cùng
     print(f"\n📍 {ten_tx_input} đang phụ trách: {', '.join(shipper['don_dang_giao'])}")
 
 
